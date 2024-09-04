@@ -321,13 +321,13 @@ const App = () => {
           </Grid>
         ))}
       </Grid>
-      <Typography sx={{ color: "#ec9410" }} variant="h3" align="center">
+      <Typography sx={{ color: "#3458bb" }} variant="h3" align="center">
         High Scores
       </Typography>
       <Box
         component="ol"
         sx={{
-          color: "#ec9410",
+          color: "#3458bb",
           paddingLeft: "0",
           listStylePosition: "inside",
           textAlign: "center",
