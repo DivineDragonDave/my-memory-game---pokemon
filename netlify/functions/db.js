@@ -16,12 +16,18 @@ const connectDB = async () => {
   }
 };
 
+// Define the schema for high scores
 const highScoreSchema = new mongoose.Schema({
   playerName: String,
   score: Number,
   date: { type: Date, default: Date.now },
 });
 
-const HighScore = mongoose.model("HighScore", highScoreSchema);
+// Define a model for the Pokemon collection
+const PokemonHighScore = mongoose.model(
+  "PokemonHighScore",
+  highScoreSchema,
+  "pokemon"
+);
 
-export { connectDB, HighScore };
+export { connectDB, PokemonHighScore };
