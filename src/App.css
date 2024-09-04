@@ -1,0 +1,150 @@
+body {
+  display: flex;
+  flex-direction: column; /* Lägg till för att hantera layouten vertikalt */
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Se till att kroppen alltid är minst 100vh hög */
+  background: linear-gradient(
+    250deg,
+    rgb(157, 118, 57) 8%,
+    rgb(0, 41, 68) 100%
+  );
+  background-size: cover; /* Se till att bakgrunden täcker hela ytan */
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Se till att bakgrunden stannar vid scroll */
+  margin: 0; /* Ta bort standardmarginalen */
+}
+.MuiGrid-root > .MuiGrid-item {
+  padding-left: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.css-6mb3u2-MuiGrid-root {
+  margin-bottom: 0 !important;
+}
+
+.deck {
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4);
+  grid-template-rows: repeat(5);
+  width: 90%;
+  height: 100%;
+  gap: 10px;
+}
+
+.card {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+img {
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.card {
+  transform-style: preserve-3d;
+  transition: transform 800ms;
+}
+
+.front,
+.back {
+  border-radius: 8px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #efe3d591;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  box-shadow: 2px 2px 10px rgba(63, 63, 63);
+  cursor: pointer;
+}
+
+.back {
+  transform: rotateY(180deg);
+  background-color: #efe3d54f;
+}
+
+.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card.hidden {
+  display: none;
+}
+
+.timer {
+  color: #ffd700;
+}
+
+.flips {
+  color: #ffd700;
+}
+
+h1 {
+  color: #ec9410;
+}
+
+p {
+  color: #9d7539;
+}
+
+button {
+  color: #40e0d0;
+  background: linear-gradient(20deg, #9d7639 25%, #002944 75%);
+}
+
+@media screen and (max-width: 500px) {
+  .deck {
+    gap: 4px;
+  }
+  .card {
+    width: 85px;
+    height: 85px;
+  }
+
+  body {
+    flex-direction: column;
+  }
+}
+@media screen and (min-width: 500px) and (max-width: 825px) {
+  .deck {
+    gap: 5px;
+  }
+  .card {
+    width: 105px;
+    height: 105px;
+  }
+
+  body {
+    flex-direction: column;
+  }
+}
+@media screen and (min-width: 825px) and (max-width: 1000px) {
+  .deck {
+    gap: 10px;
+  }
+  .card {
+    width: 170px;
+    height: 170px;
+  }
+
+  body {
+    flex-direction: column;
+  }
+}
+
+.card .front,
+.card .back {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+}
