@@ -4,16 +4,13 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh; /* Se till att kroppen alltid är minst 100vh hög */
-  background: linear-gradient(
-    250deg,
-    rgb(157, 118, 57) 8%,
-    rgb(0, 41, 68) 100%
-  );
+  background: linear-gradient(200deg, #3458bb 50%, rgb(254, 208, 1) 100%);
   background-size: cover; /* Se till att bakgrunden täcker hela ytan */
   background-repeat: no-repeat;
   background-attachment: fixed; /* Se till att bakgrunden stannar vid scroll */
   margin: 0; /* Ta bort standardmarginalen */
 }
+
 .MuiGrid-root > .MuiGrid-item {
   padding-left: 0 !important;
   padding-top: 0 !important;
@@ -80,24 +77,25 @@ img {
 }
 
 .timer {
-  color: #ffd700;
+  color: #fecf01;
 }
 
 .flips {
-  color: #ffd700;
+  color: #fecf01;
 }
 
 h1 {
-  color: #ec9410;
+  color: #fecf01;
 }
 
 p {
-  color: #9d7539;
+  color: #fecf01;
 }
 
 button {
-  color: #40e0d0;
-  background: linear-gradient(20deg, #9d7639 25%, #002944 75%);
+  color: #ffd20c !important;
+  background: linear-gradient(20deg, #b0b5c9 25%, #b52525 75%);
+  filter: brightness(0.8);
 }
 
 @media screen and (max-width: 500px) {

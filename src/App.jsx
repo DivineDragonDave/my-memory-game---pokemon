@@ -6,6 +6,10 @@ import {
   Typography,
   TextField,
   Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import "./App.css";
 import Card from "./Card";
@@ -20,10 +24,17 @@ const App = () => {
   const [isChecking, setIsChecking] = useState(false);
   const [playerName, setPlayerName] = useState("");
   const [highScores, setHighScores] = useState([]);
-  const [score, setScore] = useState(100); // Initialize the score to 100
+  const [score, setScore] = useState(100);
+  const [openDialog, setOpenDialog] = useState(true); // Modal control
+
+  // Shuffle and initialize cards only after the dialog is closed
+  useEffect(() => {
+    if (!openDialog) {
+      shuffleCards(); // Shuffle cards when dialog is closed
+    }
+  }, [openDialog]);
 
   useEffect(() => {
-    shuffleCards();
     fetchHighScores();
   }, []);
 
@@ -41,11 +52,11 @@ const App = () => {
         setHighScores(data);
       } else {
         console.error("High scores is not an array:", data);
-        setHighScores([]); // Sätt en tom array för att undvika .map()-fel
+        setHighScores([]);
       }
     } catch (error) {
       console.error("Failed to fetch high scores:", error);
-      setHighScores([]); // Sätt en tom array för att undvika .map()-fel
+      setHighScores([]);
     }
   };
 
@@ -65,7 +76,6 @@ const App = () => {
       body: JSON.stringify(newScore),
     });
 
-    // Hämta de nya high scores för att uppdatera listan
     fetchHighScores();
   };
 
@@ -99,66 +109,8 @@ const App = () => {
       "101001010101010101011",
       "101010111101001110111",
       "101010110100110010101",
-      "101010101100101011111",
-      "100110100101010111001",
-      "101102100101110010111",
-      "100000101011100101011",
-      "100110110100110110011",
-      "110100111000101110101",
-      "100101010100011010101",
-      "101011000110101011011",
-      "101001010101110100101",
-      "101011110010010110011",
-      "110001111000101010011",
-      "111100111110100111011",
-      "101110101101110011011",
-      "100101101001011101111",
-      "100101011001011011111",
-      "101100100000110010101",
-      "101101011001010111011",
-      "101101010101101111111",
-      "110101000010100000111",
-      "100101011011111111111",
-      "100101010011111111111",
-      "100101001011111111111",
-      "100101111011111111111",
-      "100100011011111111111",
-      "100101011010111111111",
-      "100101011110111111111",
-      "100101011111111111101",
-      "100101011010110111101",
-      "100101011011010111101",
-      "100101011011011011101",
-      "100101011011110101111",
-      "100101011011111111011",
-      "100101011011110101011",
-      "100101011011011101011",
-      "100101011011001011111",
-      "100101011011101011011",
-      "100101011011101010111",
-      "100101011011101111111",
-      "100101011011101011111",
-      "100101010010111111001",
-      "100101111011110101111",
-      "100101011011110011111",
-      "100001111011111111111",
-      "101101011011111111111",
-      "100111011011111111111",
-      "100110011011111111111",
-      "100100111011110110101",
-      "100100111011111100101",
-      "100101011011111011011",
-      "100101011011110110101",
-      "100101011010110111011",
-      "100101011011101111101",
-      "100101011010111011111",
-      "100101011001110111111",
-      "100101011000111111111",
-      "100101011010010111111",
-      "100101011011011111111",
-      "100101011011110111111",
-      "100101011000110111111",
     ];
+
     const selectedCards = shuffleArray([...cardNames]).slice(0, 10);
     const doubledCards = [...selectedCards, ...selectedCards];
     const shuffledCards = shuffleArray(doubledCards);
@@ -190,7 +142,7 @@ const App = () => {
     setCards(newCards);
     setFlips(flips + 1);
 
-    calculateScore(timer, flips + 1); // Calculate score based on time and flips
+    calculateScore(timer, flips + 1);
 
     const flippedCards = newCards.filter(
       (card) => card.isFlipped && !card.isMatched
@@ -231,14 +183,12 @@ const App = () => {
   const calculateScore = (currentTimer, currentFlips) => {
     let newScore = 100;
 
-    // Lose 1 point for every 5 seconds after 20 seconds
-    if (currentTimer > 20) {
-      newScore -= Math.floor((currentTimer - 20) / 5);
+    if (currentTimer > 15) {
+      newScore -= Math.floor((currentTimer - 15) / 5);
     }
 
-    // Lose 1 point for every additional flip after 30 flips
-    if (currentFlips > 30) {
-      newScore -= currentFlips - 30;
+    if (currentFlips > 25) {
+      newScore -= currentFlips - 25;
     }
 
     setScore(newScore);
@@ -258,8 +208,57 @@ const App = () => {
     shuffleCards();
   };
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false); // Close the dialog when the user clicks the button
+  };
+
   return (
     <Container>
+      <Box>
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+          <DialogTitle
+            sx={{
+              background: "#3458bb",
+            }}
+          >
+            Game Rules
+          </DialogTitle>
+          <DialogContent
+            sx={{
+              background: "#3458bb",
+            }}
+          >
+            <Typography variant="body1">
+              Welcome to the Memory Game! Here are the rules:
+              <ol>
+                <li>Flip two cards and try to match them.</li>
+                <li>If they match, they stay flipped.</li>
+                <li>If not, they flip back.</li>
+                <li>Match all pairs to win.</li>
+                <li>
+                  You lose points for taking too much time or too many flips.
+                </li>
+                <li>
+                  Enter your name before flipping the cards if you want to be on
+                  the high score board, or skip if you want to remain anonymous.
+                  You can't enter your name after the game is done.
+                </li>
+              </ol>
+              Click "Start Game" to begin playing.
+            </Typography>
+          </DialogContent>
+          <DialogActions
+            sx={{
+              background: "#3458bb",
+            }}
+          >
+            <Button onClick={handleCloseDialog} color="primary">
+              Start Game
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+
       <Typography variant="h1" align="center">
         Memory
       </Typography>
@@ -275,10 +274,10 @@ const App = () => {
         disabled={isGameActive}
         sx={{ mb: 2 }}
         InputProps={{
-          style: { color: "#fff410" },
+          style: { color: "#fecf01" },
         }}
         InputLabelProps={{
-          style: { color: "#ec9410" },
+          style: { color: "#fecf01" },
         }}
       />
 
