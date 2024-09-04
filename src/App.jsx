@@ -209,7 +209,8 @@ const App = () => {
   };
 
   const handleCloseDialog = () => {
-    setOpenDialog(false); // Close the dialog when the user clicks the button
+    setOpenDialog(false); // Close the dialog
+    shuffleCards(); // Trigger card shuffle after dialog is closed
   };
 
   return (
