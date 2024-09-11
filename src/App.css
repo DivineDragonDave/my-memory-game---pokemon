@@ -135,8 +135,12 @@ button {
 
 /* Styles for mobile screens (max-width: 768px) */
 @media only screen and (max-width: 768px) {
+  h3 {
+    font-size: 28px !important;
+  }
+
   .timer {
-    font-size: 16px !important;
+    font-size: 18px !important;
   }
 
   button {
@@ -148,5 +152,8 @@ button {
   input {
     font-size: 19px !important;
     font-weight: 400;
+  }
+  .css-17lqswo {
+    font-size: 12px !important;
   }
 }
