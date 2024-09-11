@@ -132,3 +132,21 @@ button {
   background-position: center;
   border-radius: 8px;
 }
+
+/* Styles for mobile screens (max-width: 768px) */
+@media only screen and (max-width: 768px) {
+  .timer {
+    font-size: 16px !important;
+  }
+
+  button {
+    font-size: 12px !important;
+  }
+
+  p,
+  label,
+  input {
+    font-size: 19px !important;
+    font-weight: 400;
+  }
+}
