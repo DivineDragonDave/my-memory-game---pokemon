@@ -15,6 +15,14 @@ import "./App.css";
 import Card from "./Card";
 
 const App = () => {
+  useEffect(() => {
+    const cheatLogger = setInterval(() => {
+      console.log("Cheater");
+    }, 1000);
+
+    return () => clearInterval(cheatLogger);
+  }, []);
+
   const [cards, setCards] = useState([]);
   const [flips, setFlips] = useState(0);
   const [matches, setMatches] = useState(0);
@@ -25,12 +33,12 @@ const App = () => {
   const [playerName, setPlayerName] = useState("");
   const [highScores, setHighScores] = useState([]);
   const [score, setScore] = useState(100);
-  const [openDialog, setOpenDialog] = useState(true); // Modal control
+  const [openDialog, setOpenDialog] = useState(true);
+  const [openResultDialog, setOpenResultDialog] = useState(false);
 
-  // Shuffle and initialize cards only after the dialog is closed
   useEffect(() => {
     if (!openDialog) {
-      shuffleCards(); // Shuffle cards when dialog is closed
+      shuffleCards();
     }
   }, [openDialog]);
 
@@ -62,7 +70,6 @@ const App = () => {
 
   const saveHighScore = async () => {
     if (!playerName) {
-      alert("Please enter your name before saving your score!");
       return;
     }
 
@@ -183,7 +190,7 @@ const App = () => {
     setFlips(0);
     setMatches(0);
     setIsChecking(false);
-    setScore(100); // Reset score to 100 on shuffle
+    setScore(100);
   };
 
   const handleCardClick = (index) => {
@@ -219,11 +226,7 @@ const App = () => {
           setTimeout(() => {
             clearInterval(timerInterval);
             saveHighScore();
-            alert(
-              `Congratulations, ${playerName}! You completed the game in ${timer} seconds and ${
-                flips + 1
-              } flips! Your score is ${score}.`
-            );
+            setOpenResultDialog(true);
           }, 500);
         }
       } else {
@@ -263,13 +266,22 @@ const App = () => {
 
   const resetGame = () => {
     clearInterval(timerInterval);
+    setTimer(0);
     setIsGameActive(false);
+    setOpenResultDialog(false);
     shuffleCards();
+    setTimeout(() => {
+      shuffleCards();
+    }, 1000);
   };
 
   const handleCloseDialog = () => {
-    setOpenDialog(false); // Close the dialog
-    shuffleCards(); // Trigger card shuffle after dialog is closed
+    setOpenDialog(false);
+    shuffleCards();
+  };
+
+  const handleCloseResultDialog = () => {
+    setOpenResultDialog(false);
   };
 
   return (
@@ -279,6 +291,8 @@ const App = () => {
           <DialogTitle
             sx={{
               background: "#3458bb",
+              fontWeight: "900",
+              fontSize: "32px",
             }}
           >
             Game Rules
@@ -288,7 +302,7 @@ const App = () => {
               background: "#3458bb",
             }}
           >
-            <Typography variant="body1">
+            <Typography sx={{ fontWeight: "600", fontSize: "20px" }}>
               Welcome to the Memory Game! Here are the rules:
               <ol>
                 <li>Flip two cards and try to match them.</li>
@@ -304,7 +318,6 @@ const App = () => {
                   You can't enter your name after the game is done.
                 </li>
               </ol>
-              Click "Start Game" to begin playing.
             </Typography>
           </DialogContent>
           <DialogActions
@@ -314,6 +327,40 @@ const App = () => {
           >
             <Button onClick={handleCloseDialog} color="primary">
               Start Game
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={openResultDialog} onClose={handleCloseResultDialog}>
+          <DialogTitle
+            sx={{
+              background: "#3458bb",
+            }}
+          >
+            Game Completed!
+          </DialogTitle>
+          <DialogContent
+            sx={{
+              background: "#3458bb",
+            }}
+          >
+            <Typography variant="body1">
+              Congratulations, {playerName}! <br />
+              You completed the game in {timer} seconds and {flips} flips!{" "}
+              <br />
+              Your score is {score}.
+            </Typography>
+          </DialogContent>
+          <DialogActions
+            sx={{
+              background: "#3458bb",
+            }}
+          >
+            <Button onClick={resetGame} color="primary">
+              Play Again
+            </Button>
+            <Button onClick={handleCloseResultDialog} color="primary">
+              Close
             </Button>
           </DialogActions>
         </Dialog>
@@ -334,34 +381,38 @@ const App = () => {
         disabled={isGameActive}
         sx={{ mb: 2 }}
         InputProps={{
-          style: { color: "#fecf01" },
+          style: { color: "black" },
         }}
         InputLabelProps={{
-          style: { color: "#fecf01" },
+          style: { color: "black" },
         }}
       />
 
-      <Grid container justifyContent="center" alignItems="center">
-        <Grid item>
-          <Button
-            sx={{ mb: 1 }}
-            variant="contained"
-            color="primary"
-            onClick={resetGame}
-          >
-            Reset Game
-          </Button>
-        </Grid>
-        <Grid item>
-          <Typography
-            sx={{ margin: 1, fontSize: 26 }}
-            variant="h6"
-            className="timer"
-          >
-            Time: {timer} seconds Score: {score}
-          </Typography>
-        </Grid>
-      </Grid>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 2, // Gap between the button and text
+          mb: 2, // Margin-bottom for some space below the box
+        }}
+      >
+        <Button variant="contained" color="primary" onClick={resetGame}>
+          Reset Game
+        </Button>
+        <Typography
+          sx={{
+            fontSize: 28,
+            display: "flex",
+            alignItems: "center",
+          }}
+          variant="h6"
+          className="timer"
+        >
+          Time: {timer} seconds Score: {score}
+        </Typography>
+      </Box>
+
       <Grid
         container
         sx={{
@@ -380,13 +431,12 @@ const App = () => {
           </Grid>
         ))}
       </Grid>
-      <Typography sx={{ color: "#3458bb" }} variant="h3" align="center">
+      <Typography variant="h3" align="center">
         High Scores
       </Typography>
       <Box
         component="ol"
         sx={{
-          color: "#3458bb",
           paddingLeft: "0",
           listStylePosition: "inside",
           textAlign: "center",

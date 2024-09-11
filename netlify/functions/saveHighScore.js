@@ -1,10 +1,9 @@
-// netlify/functions/saveHighScore.js (for Pokemon game)
 import { connectDB, PokemonHighScore } from "./db";
 
 export const handler = async (event, context) => {
   try {
     await connectDB();
-    const newScore = new PokemonHighScore(JSON.parse(event.body)); // Create a new high score for the Pokemon collection
+    const newScore = new PokemonHighScore(JSON.parse(event.body));
     await newScore.save();
     return {
       statusCode: 201,

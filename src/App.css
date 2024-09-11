@@ -54,7 +54,7 @@ img {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #efe3d591;
+  background-color: #00000091;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,26 +76,12 @@ img {
   display: none;
 }
 
-.timer {
-  color: #fecf01;
-}
-
-.flips {
-  color: #fecf01;
-}
-
-h1 {
-  color: #fecf01;
-}
-
-p {
-  color: #fecf01;
-}
-
 button {
-  color: #ffd20c !important;
-  background: linear-gradient(20deg, #b0b5c9 25%, #b52525 75%);
-  filter: brightness(0.8);
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: black !important;
+  background-color: #b52525 !important ;
+  filter: brightness(0.9);
 }
 
 @media screen and (max-width: 500px) {
