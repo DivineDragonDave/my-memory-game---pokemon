@@ -1,14 +1,14 @@
 body {
   display: flex;
-  flex-direction: column; /* Lägg till för att hantera layouten vertikalt */
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh; /* Se till att kroppen alltid är minst 100vh hög */
-  background: linear-gradient(200deg, #3458bb 50%, rgb(254, 208, 1) 100%);
-  background-size: cover; /* Se till att bakgrunden täcker hela ytan */
+  min-height: 100vh;
+
+  background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed; /* Se till att bakgrunden stannar vid scroll */
-  margin: 0; /* Ta bort standardmarginalen */
+  background-attachment: fixed;
+  margin: 0;
 }
 
 .MuiGrid-root > .MuiGrid-item {
@@ -17,7 +17,7 @@ body {
   padding-bottom: 0 !important;
 }
 .css-6mb3u2-MuiGrid-root {
-  margin-bottom: 0 !important;
+  margin-bottom: 0px !important;
 }
 
 .deck {
@@ -65,7 +65,10 @@ img {
 
 .back {
   transform: rotateY(180deg);
-  background-color: #efe3d54f;
+  background-color: #c3cfee;
+}
+.front {
+  background-color: #3458bb;
 }
 
 .is-flipped {
@@ -79,8 +82,7 @@ img {
 button {
   font-weight: 600 !important;
   font-size: 16px !important;
-  color: black !important;
-  background-color: #b52525 !important ;
+
   filter: brightness(0.9);
 }
 
@@ -133,7 +135,6 @@ button {
   border-radius: 8px;
 }
 
-/* Styles for mobile screens (max-width: 768px) */
 @media only screen and (max-width: 768px) {
   h3 {
     font-size: 28px !important;

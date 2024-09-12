@@ -1,5 +1,5 @@
 import React from "react";
-import aaLogo from "/images/Namnlöst-1.png";
+import aaLogo from "/images/boll.jpg";
 import imageMap from "./imageMap"; // Importera bildmappen
 
 const Card = ({ card, index, onClick }) => {

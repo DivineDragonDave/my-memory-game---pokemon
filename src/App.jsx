@@ -290,28 +290,21 @@ const App = () => {
         <Dialog open={openDialog} onClose={handleCloseDialog}>
           <DialogTitle
             sx={{
-              background: "#3458bb",
               fontWeight: "900",
               fontSize: "32px",
             }}
           >
             Game Rules
           </DialogTitle>
-          <DialogContent
-            sx={{
-              background: "#3458bb",
-            }}
-          >
-            <Typography sx={{ fontWeight: "600", fontSize: "20px" }}>
-              Welcome to the Memory Game! Here are the rules:
+          <DialogContent>
+            <Typography sx={{ fontWeight: "500", fontSize: "20px" }}>
+              Here are the rules:
               <ol>
                 <li>Flip two cards and try to match them.</li>
                 <li>If they match, they stay flipped.</li>
                 <li>If not, they flip back.</li>
                 <li>Match all pairs to win.</li>
-                <li>
-                  You lose points for taking too much time or too many flips.
-                </li>
+
                 <li>
                   Enter your name before flipping the cards if you want to be on
                   the high score board, or skip if you want to remain anonymous.
@@ -319,16 +312,8 @@ const App = () => {
                 </li>
               </ol>
             </Typography>
+            <Button onClick={handleCloseDialog}>Start Game</Button>
           </DialogContent>
-          <DialogActions
-            sx={{
-              background: "#3458bb",
-            }}
-          >
-            <Button onClick={handleCloseDialog} color="primary">
-              Start Game
-            </Button>
-          </DialogActions>
         </Dialog>
 
         <Dialog open={openResultDialog} onClose={handleCloseResultDialog}>
@@ -393,8 +378,8 @@ const App = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          gap: 2, // Gap between the button and text
-          mb: 2, // Margin-bottom for some space below the box
+          gap: 2,
+          mb: 2,
         }}
       >
         <Button variant="contained" color="primary" onClick={resetGame}>
@@ -431,7 +416,7 @@ const App = () => {
           </Grid>
         ))}
       </Grid>
-      <Typography variant="h3" align="center">
+      <Typography marginTop={"16px"} variant="h3" align="center">
         High Scores
       </Typography>
       <Box
