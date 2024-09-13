@@ -13,6 +13,9 @@ import {
 } from "@mui/material";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { lightThemeOptions, darkThemeOptions } from "./utils/them";
+import { Brightness4, Brightness7 } from "@mui/icons-material";
+import ModeNightIcon from "@mui/icons-material/ModeNight";
+import LightModeIcon from "@mui/icons-material/LightMode";
 import "./App.css";
 import Card from "./Card";
 
@@ -299,12 +302,6 @@ const App = () => {
       <CssBaseline />
       <Container>
         <Box>
-          <Button
-            onClick={toggleTheme}
-            sx={{ position: "fixed", top: 16, right: 16 }}
-          >
-            Switch to {isDarkMode ? "Light" : "Dark"} Mode
-          </Button>
           <Dialog open={openDialog} onClose={handleCloseDialog}>
             <DialogTitle
               sx={{
@@ -369,21 +366,54 @@ const App = () => {
           </Dialog>
         </Box>
 
-        <Typography variant="h1" align="center">
-          Memory
-        </Typography>
-        <Typography variant="subtitle1" align="center">
-          Click a card to start
-        </Typography>
-        <TextField
-          label="Enter your name"
-          variant="outlined"
-          fullWidth
-          value={playerName}
-          onChange={(e) => setPlayerName(e.target.value)}
-          disabled={isGameActive}
-          sx={{ mb: 2 }}
-        />
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            onClick={toggleTheme}
+            sx={{
+              top: "15px",
+              right: "10px",
+              borderRadius: "100%",
+              width: "40px",
+              height: "40px",
+              minWidth: "30px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {isDarkMode ? <ModeNightIcon /> : <LightModeIcon />}{" "}
+            {/* Växla mellan ikoner */}
+          </Button>
+          <Typography variant="h2" component={"h1"} align="center">
+            Memory
+          </Typography>
+        </Box>
+
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <TextField
+            label="Enter your name"
+            variant="outlined"
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
+            disabled={isGameActive}
+            sx={{ mb: 2 }}
+            InputProps={{
+              sx: {
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "2px solid",
+                  borderColor: "primary.main",
+                  borderRadius: "5px",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "primary.dark",
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "primary.light",
+                },
+              },
+            }}
+          />
+        </Box>
 
         <Box
           sx={{
@@ -409,6 +439,9 @@ const App = () => {
             Time: {timer} seconds Score: {score}
           </Typography>
         </Box>
+        <Typography variant="subtitle1" align="center">
+          Click a card to start
+        </Typography>
 
         <Grid
           container
