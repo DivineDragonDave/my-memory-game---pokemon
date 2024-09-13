@@ -11,10 +11,20 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+import { lightThemeOptions, darkThemeOptions } from "./utils/them";
 import "./App.css";
 import Card from "./Card";
 
 const App = () => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const currentTheme = createTheme(
+    isDarkMode ? darkThemeOptions : lightThemeOptions
+  );
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   useEffect(() => {
     const cheatLogger = setInterval(() => {
       console.log("Cheater");
@@ -285,159 +295,162 @@ const App = () => {
   };
 
   return (
-    <Container>
-      <Box>
-        <Dialog open={openDialog} onClose={handleCloseDialog}>
-          <DialogTitle
-            sx={{
-              fontWeight: "900",
-              fontSize: "32px",
-            }}
+    <ThemeProvider theme={currentTheme}>
+      <CssBaseline />
+      <Container>
+        <Box>
+          <Button
+            onClick={toggleTheme}
+            sx={{ position: "fixed", top: 16, right: 16 }}
           >
-            Game Rules
-          </DialogTitle>
-          <DialogContent>
-            <Typography sx={{ fontWeight: "500", fontSize: "20px" }}>
-              Here are the rules:
-              <ol>
-                <li>Flip two cards and try to match them.</li>
-                <li>If they match, they stay flipped.</li>
-                <li>If not, they flip back.</li>
-                <li>Match all pairs to win.</li>
+            Switch to {isDarkMode ? "Light" : "Dark"} Mode
+          </Button>
+          <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <DialogTitle
+              sx={{
+                fontWeight: "900",
+                fontSize: "32px",
+              }}
+            >
+              Game Rules
+            </DialogTitle>
+            <DialogContent>
+              <Typography sx={{ fontWeight: "500", fontSize: "20px" }}>
+                Here are the rules:
+                <ol>
+                  <li>Flip two cards and try to match them.</li>
+                  <li>If they match, they stay flipped.</li>
+                  <li>If not, they flip back.</li>
+                  <li>Match all pairs to win.</li>
 
-                <li>
-                  Enter your name before flipping the cards if you want to be on
-                  the high score board, or skip if you want to remain anonymous.
-                  You can't enter your name after the game is done.
-                </li>
-              </ol>
-            </Typography>
-            <Button onClick={handleCloseDialog}>Start Game</Button>
-          </DialogContent>
-        </Dialog>
+                  <li>
+                    Enter your name before flipping the cards if you want to be
+                    on the high score board, or skip if you want to remain
+                    anonymous. You can't enter your name after the game is done.
+                  </li>
+                </ol>
+              </Typography>
+              <Button onClick={handleCloseDialog}>Start Game</Button>
+            </DialogContent>
+          </Dialog>
 
-        <Dialog open={openResultDialog} onClose={handleCloseResultDialog}>
-          <DialogTitle
-            sx={{
-              background: "#3458bb",
-            }}
-          >
-            Game Completed!
-          </DialogTitle>
-          <DialogContent
-            sx={{
-              background: "#3458bb",
-            }}
-          >
-            <Typography variant="body1">
-              Congratulations, {playerName}! <br />
-              You completed the game in {timer} seconds and {flips} flips!{" "}
-              <br />
-              Your score is {score}.
-            </Typography>
-          </DialogContent>
-          <DialogActions
-            sx={{
-              background: "#3458bb",
-            }}
-          >
-            <Button onClick={resetGame} color="primary">
-              Play Again
-            </Button>
-            <Button onClick={handleCloseResultDialog} color="primary">
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
+          <Dialog open={openResultDialog} onClose={handleCloseResultDialog}>
+            <DialogTitle
+              sx={{
+                background: "#3458bb",
+              }}
+            >
+              Game Completed!
+            </DialogTitle>
+            <DialogContent
+              sx={{
+                background: "#3458bb",
+              }}
+            >
+              <Typography variant="body1">
+                Congratulations, {playerName}! <br />
+                You completed the game in {timer} seconds and {flips} flips!{" "}
+                <br />
+                Your score is {score}.
+              </Typography>
+            </DialogContent>
+            <DialogActions
+              sx={{
+                background: "#3458bb",
+              }}
+            >
+              <Button onClick={resetGame} color="primary">
+                Play Again
+              </Button>
+              <Button onClick={handleCloseResultDialog} color="primary">
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Box>
 
-      <Typography variant="h1" align="center">
-        Memory
-      </Typography>
-      <Typography variant="subtitle1" align="center">
-        Click a card to start
-      </Typography>
-      <TextField
-        label="Enter your name"
-        variant="outlined"
-        fullWidth
-        value={playerName}
-        onChange={(e) => setPlayerName(e.target.value)}
-        disabled={isGameActive}
-        sx={{ mb: 2 }}
-        InputProps={{
-          style: { color: "black" },
-        }}
-        InputLabelProps={{
-          style: { color: "black" },
-        }}
-      />
-
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 2,
-          mb: 2,
-        }}
-      >
-        <Button variant="contained" color="primary" onClick={resetGame}>
-          Reset Game
-        </Button>
-        <Typography
-          sx={{
-            fontSize: 28,
-            display: "flex",
-            alignItems: "center",
-          }}
-          variant="h6"
-          className="timer"
-        >
-          Time: {timer} seconds Score: {score}
+        <Typography variant="h1" align="center">
+          Memory
         </Typography>
-      </Box>
+        <Typography variant="subtitle1" align="center">
+          Click a card to start
+        </Typography>
+        <TextField
+          label="Enter your name"
+          variant="outlined"
+          fullWidth
+          value={playerName}
+          onChange={(e) => setPlayerName(e.target.value)}
+          disabled={isGameActive}
+          sx={{ mb: 2 }}
+        />
 
-      <Grid
-        container
-        sx={{
-          marginTop: 0,
-          marginLeft: "-8px",
-          marginBottom: "0px !important",
-        }}
-        justifyContent="center"
-        alignItems="center"
-        spacing={2}
-        className="deck"
-      >
-        {cards.map((card, index) => (
-          <Grid sx={{ mb: 1 }} item key={index}>
-            <Card card={card} index={index} onClick={handleCardClick} />
-          </Grid>
-        ))}
-      </Grid>
-      <Typography marginTop={"16px"} variant="h3" align="center">
-        High Scores
-      </Typography>
-      <Box
-        component="ol"
-        sx={{
-          paddingLeft: "0",
-          listStylePosition: "inside",
-          textAlign: "center",
-        }}
-      >
-        {highScores.length > 0 ? (
-          highScores.map((score, index) => (
-            <li key={index}>
-              {score.playerName} - {score.score} points
-            </li>
-          ))
-        ) : (
-          <Typography variant="h6">No high scores available.</Typography>
-        )}
-      </Box>
-    </Container>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 2,
+            mb: 2,
+          }}
+        >
+          <Button variant="contained" color="primary" onClick={resetGame}>
+            Reset Game
+          </Button>
+          <Typography
+            sx={{
+              fontSize: 28,
+              display: "flex",
+              alignItems: "center",
+            }}
+            variant="h6"
+            className="timer"
+          >
+            Time: {timer} seconds Score: {score}
+          </Typography>
+        </Box>
+
+        <Grid
+          container
+          sx={{
+            marginTop: 0,
+            marginLeft: "-8px",
+            marginBottom: "0px !important",
+          }}
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+          className="deck"
+        >
+          {cards.map((card, index) => (
+            <Grid sx={{ mb: 1 }} item key={index}>
+              <Card card={card} index={index} onClick={handleCardClick} />
+            </Grid>
+          ))}
+        </Grid>
+        <Typography marginTop={"16px"} variant="h3" align="center">
+          High Scores
+        </Typography>
+        <Box
+          component="ol"
+          sx={{
+            paddingLeft: "0",
+            listStylePosition: "inside",
+            textAlign: "center",
+          }}
+        >
+          {highScores.length > 0 ? (
+            highScores.map((score, index) => (
+              <li key={index}>
+                {score.playerName} - {score.score} points
+              </li>
+            ))
+          ) : (
+            <Typography variant="h6">No high scores available.</Typography>
+          )}
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 };
 
